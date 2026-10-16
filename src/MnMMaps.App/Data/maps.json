@@ -1,0 +1,287 @@
+[
+  {
+    "id": "ail-vorith--07b875ab74",
+    "name": "Ail'Vorith — Foreign quarter",
+    "area": "Ail'Vorith",
+    "imageUrl": "https://static.wikitide.net/monstersandmemorieswiki/e/ec/Ailvorith_foreignquarters2.jpg",
+    "sourceUrl": "https://monstersandmemories.miraheze.org/wiki/File:Ailvorith_foreignquarters2.jpg",
+    "credit": "Ail'Vorith · Community wiki map. See Wiki source for the original author and image license.",
+    "discoveredFrom": "https://www.mnmatlas.com/ail-vorith/",
+    "checkedOn": "2026-10-16"
+  },
+  {
+    "id": "ancient-crypt",
+    "name": "Ancient Crypt",
+    "imageUrl": "https://static.wikitide.net/monstersandmemorieswiki/a/ae/Ancient_Crypt_Map.png",
+    "sourceUrl": "https://monstersandmemories.miraheze.org/wiki/File:Ancient_Crypt_Map.png"
+  },
+  {
+    "id": "blacktide-bay--2416894109",
+    "name": "Blacktide Bay",
+    "area": "Blacktide Bay",
+    "imageUrl": "https://static.wikitide.net/monstersandmemorieswiki/0/09/Blacktide_Bay.jpg",
+    "sourceUrl": "https://monstersandmemories.miraheze.org/wiki/File:Blacktide_Bay.jpg",
+    "credit": "Blacktide Bay · Community wiki map. See Wiki source for the original author and image license.",
+    "discoveredFrom": "https://storiesofmnm.com/zone/blacktide-bay/",
+    "checkedOn": "2026-10-16"
+  },
+  {
+    "id": "blind-midden--da86ebd88f",
+    "name": "Blind Midden — Ground floor",
+    "area": "Blind Midden",
+    "imageUrl": "https://static.wikitide.net/monstersandmemorieswiki/7/71/Blind_Midden_-_Ground_Floor.png",
+    "sourceUrl": "https://monstersandmemories.miraheze.org/wiki/File:Blind_Midden_-_Ground_Floor.png",
+    "credit": "Blind Midden · Community wiki map. See Wiki source for the original author and image license.",
+    "discoveredFrom": "https://github.com/amyklindley/mo-betta-quests/blob/main/zones.json",
+    "checkedOn": "2026-10-16"
+  },
+  {
+    "id": "caves-of-irem--7ba884e1d3",
+    "name": "Caves of Irem — Naawa's map",
+    "area": "Caves of Irem",
+    "imageUrl": "https://static.wikitide.net/monstersandmemorieswiki/c/c2/Caves_of_Irem_By_Naawa.png",
+    "sourceUrl": "https://monstersandmemories.miraheze.org/wiki/File:Caves_of_Irem_By_Naawa.png",
+    "credit": "Caves of Irem · Community wiki map. See Wiki source for the original author and image license.",
+    "discoveredFrom": "https://www.mnmatlas.com/caves-of-irem/",
+    "checkedOn": "2026-10-16"
+  },
+  {
+    "id": "caves-of-irem--e0a23463df",
+    "name": "Caves of Irem — Older Deep Dunes map",
+    "area": "Caves of Irem",
+    "imageUrl": "https://static.wikitide.net/monstersandmemorieswiki/6/6b/Deep_Dunes_Map.png",
+    "sourceUrl": "https://monstersandmemories.miraheze.org/wiki/File:Deep_Dunes_Map.png",
+    "credit": "Caves of Irem · Community wiki map. See Wiki source for the original author and image license.",
+    "discoveredFrom": "https://storiesofmnm.com/zone/caves-of-irem/",
+    "checkedOn": "2026-10-16"
+  },
+  {
+    "id": "evershade-weald--399c01574a",
+    "name": "Evershade Weald — Nindaan (June 26)",
+    "area": "Evershade Weald",
+    "imageUrl": "https://static.wikitide.net/monstersandmemorieswiki/7/74/Evershade_Weald_june_26.jpg",
+    "sourceUrl": "https://monstersandmemories.miraheze.org/wiki/File:Evershade_Weald_june_26.jpg",
+    "credit": "Evershade Weald · Community wiki map. See Wiki source for the original author and image license.",
+    "discoveredFrom": "https://www.mnmatlas.com/evershade-weald/",
+    "checkedOn": "2026-10-16"
+  },
+  {
+    "id": "evershade-weald--1aae8cf7b4",
+    "name": "Evershade Weald — Overview",
+    "area": "Evershade Weald",
+    "imageUrl": "https://static.wikitide.net/monstersandmemorieswiki/thumb/8/8e/Evershade_Weald_Map.jpg/4096px-Evershade_Weald_Map.jpg",
+    "sourceUrl": "https://monstersandmemories.miraheze.org/wiki/File:Evershade_Weald_Map.jpg",
+    "credit": "Evershade Weald · Community wiki map. See Wiki source for the original author and image license.",
+    "discoveredFrom": "https://storiesofmnm.com/zone/evershade-weald/",
+    "checkedOn": "2026-10-16"
+  },
+  {
+    "id": "faelindral--c2f48baa5a",
+    "name": "Faelindral — V2",
+    "area": "Faelindral",
+    "imageUrl": "https://static.wikitide.net/monstersandmemorieswiki/b/b6/Faelindral_V2.jpg",
+    "sourceUrl": "https://monstersandmemories.miraheze.org/wiki/File:Faelindral_V2.jpg",
+    "credit": "Faelindral · Community wiki map. See Wiki source for the original author and image license.",
+    "discoveredFrom": "https://www.mnmatlas.com/faelindral/",
+    "checkedOn": "2026-10-16"
+  },
+  {
+    "id": "fallen-pass--fa1da1b457",
+    "name": "Fallen Pass — V1",
+    "area": "Fallen Pass",
+    "imageUrl": "https://static.wikitide.net/monstersandmemorieswiki/9/99/Fallen_pass_v1.jpg",
+    "sourceUrl": "https://monstersandmemories.miraheze.org/wiki/File:Fallen_pass_v1.jpg",
+    "credit": "Fallen Pass · Community wiki map. See Wiki source for the original author and image license.",
+    "discoveredFrom": "https://www.mnmatlas.com/fallen-pass/",
+    "checkedOn": "2026-10-16"
+  },
+  {
+    "id": "fallen-watch",
+    "name": "Fallen Watch",
+    "imageUrl": "https://static.wikitide.net/monstersandmemorieswiki/7/72/Fallen_watch_map_by_skoop.png",
+    "sourceUrl": "https://monstersandmemories.miraheze.org/wiki/File:Fallen_watch_map_by_skoop.png",
+    "credit": "Fallen Watch · Map by Skoop · Community wiki. Open Wiki source for image credits and licensing."
+  },
+  {
+    "id": "glass-flats",
+    "name": "Glass Flats",
+    "imageUrl": "https://static.wikitide.net/monstersandmemorieswiki/e/eb/Glass_Flats_Map.png",
+    "sourceUrl": "https://monstersandmemories.miraheze.org/wiki/File:Glass_Flats_Map.png"
+  },
+  {
+    "id": "grain-cellar--095761480e",
+    "name": "Grain Cellar — Isometric",
+    "area": "Grain Cellar",
+    "imageUrl": "https://static.wikitide.net/monstersandmemorieswiki/a/a9/Grain_Cellar_Isometric.jpg",
+    "sourceUrl": "https://monstersandmemories.miraheze.org/wiki/File:Grain_Cellar_Isometric.jpg",
+    "credit": "Grain Cellar · Community wiki map. See Wiki source for the original author and image license.",
+    "discoveredFrom": "https://www.mnmatlas.com/grain-cellar/",
+    "checkedOn": "2026-10-16"
+  },
+  {
+    "id": "grain-cellar--7601be5907",
+    "name": "Grain Cellar — Plan",
+    "area": "Grain Cellar",
+    "imageUrl": "https://static.wikitide.net/monstersandmemorieswiki/c/ca/Graincellar.png",
+    "sourceUrl": "https://monstersandmemories.miraheze.org/wiki/File:Graincellar.png",
+    "credit": "Grain Cellar · Community wiki map. See Wiki source for the original author and image license.",
+    "discoveredFrom": "https://storiesofmnm.com/zone/grain-cellar/",
+    "checkedOn": "2026-10-16"
+  },
+  {
+    "id": "great-cavern-sea",
+    "name": "Great Cavern Sea",
+    "imageUrl": "https://static.wikitide.net/monstersandmemorieswiki/5/52/Great_Cavern_Sea_Map.png",
+    "sourceUrl": "https://monstersandmemories.miraheze.org/wiki/File:Great_Cavern_Sea_Map.png"
+  },
+  {
+    "id": "grimtide-sanctum",
+    "name": "Grimtide Sanctum",
+    "imageUrl": "https://static.wikitide.net/monstersandmemorieswiki/c/ce/MAP_GrimtideSanctum.png",
+    "sourceUrl": "https://monstersandmemories.miraheze.org/wiki/File:MAP_GrimtideSanctum.png"
+  },
+  {
+    "id": "infested-crypt",
+    "name": "Infested Crypt",
+    "imageUrl": "https://static.wikitide.net/monstersandmemorieswiki/c/cb/Infested_Crypt_Map.png",
+    "sourceUrl": "https://monstersandmemories.miraheze.org/wiki/File:Infested_Crypt_Map.png"
+  },
+  {
+    "id": "keeper-s-bight--52d166f8f0",
+    "name": "Keeper's Bight",
+    "area": "Keeper's Bight",
+    "imageUrl": "https://static.wikitide.net/monstersandmemorieswiki/1/19/Keepersbighteg.png",
+    "sourceUrl": "https://monstersandmemories.miraheze.org/wiki/File:Keepersbighteg.png",
+    "credit": "Keeper's Bight · Community wiki map. See Wiki source for the original author and image license.",
+    "discoveredFrom": "https://www.mnmatlas.com/keepers-bight/",
+    "checkedOn": "2026-10-16"
+  },
+  {
+    "id": "night-harbor",
+    "name": "Night Harbor",
+    "imageUrl": "https://static.wikitide.net/monstersandmemorieswiki/a/af/Night_harbor_V2.jpg",
+    "sourceUrl": "https://monstersandmemories.miraheze.org/wiki/File:Night_harbor_V2.jpg",
+    "credit": "Night Harbor · Map by Maggot · Community wiki. Open Wiki source for image credits and licensing."
+  },
+  {
+    "id": "night-harbor--f46501d98e",
+    "name": "Night Harbor — V5",
+    "area": "Night Harbor",
+    "imageUrl": "https://static.wikitide.net/monstersandmemorieswiki/5/5a/Night_harbor_V5.jpg",
+    "sourceUrl": "https://monstersandmemories.miraheze.org/wiki/File:Night_harbor_V5.jpg",
+    "credit": "Night Harbor · Community wiki map. See Wiki source for the original author and image license.",
+    "discoveredFrom": "https://www.mnmatlas.com/night-harbor/",
+    "checkedOn": "2026-10-16"
+  },
+  {
+    "id": "rothold",
+    "name": "Rothold",
+    "imageUrl": "https://static.wikitide.net/monstersandmemorieswiki/3/34/Rothold_map_by_skoop.png",
+    "sourceUrl": "https://monstersandmemories.miraheze.org/wiki/File:Rothold_map_by_skoop.png",
+    "credit": "Rothold · Map by Skoop · Community wiki. Open Wiki source for image credits and licensing."
+  },
+  {
+    "id": "scarwood--074cbd412a",
+    "name": "Scarwood",
+    "area": "Scarwood",
+    "imageUrl": "https://static.wikitide.net/monstersandmemorieswiki/3/34/Scarwood.png",
+    "sourceUrl": "https://monstersandmemories.miraheze.org/wiki/File:Scarwood.png",
+    "credit": "Scarwood · Community wiki map. See Wiki source for the original author and image license.",
+    "discoveredFrom": "https://www.mnmatlas.com/scarwood/",
+    "checkedOn": "2026-10-16"
+  },
+  {
+    "id": "shaded-dunes",
+    "name": "Shaded Dunes",
+    "imageUrl": "https://static.wikitide.net/monstersandmemorieswiki/a/a7/Shaded_Dunes_Map.jpg",
+    "sourceUrl": "https://monstersandmemories.miraheze.org/wiki/File:Shaded_Dunes_Map.jpg"
+  },
+  {
+    "id": "shallow-shoals",
+    "name": "Shallow Shoals",
+    "imageUrl": "https://static.wikitide.net/monstersandmemorieswiki/0/05/BadShallowShoalMap.png",
+    "sourceUrl": "https://monstersandmemories.miraheze.org/wiki/File:BadShallowShoalMap.png"
+  },
+  {
+    "id": "sungreet-strand--c31c766d99",
+    "name": "Sungreet Strand — Overview",
+    "area": "Sungreet Strand",
+    "imageUrl": "https://static.wikitide.net/monstersandmemorieswiki/6/6b/Sungreet_Strand_map.jpg",
+    "sourceUrl": "https://monstersandmemories.miraheze.org/wiki/File:Sungreet_Strand_map.jpg",
+    "credit": "Sungreet Strand · Community wiki map. See Wiki source for the original author and image license.",
+    "discoveredFrom": "https://storiesofmnm.com/zone/sungreet-strand/",
+    "checkedOn": "2026-10-16"
+  },
+  {
+    "id": "sungreet-strand--c484110f43",
+    "name": "Sungreet Strand — V4",
+    "area": "Sungreet Strand",
+    "imageUrl": "https://static.wikitide.net/monstersandmemorieswiki/0/0c/Sungreet_Strand_v4.jpg",
+    "sourceUrl": "https://monstersandmemories.miraheze.org/wiki/File:Sungreet_Strand_v4.jpg",
+    "credit": "Sungreet Strand · Community wiki map. See Wiki source for the original author and image license.",
+    "discoveredFrom": "https://www.mnmatlas.com/sungreet-strand/",
+    "checkedOn": "2026-10-16"
+  },
+  {
+    "id": "sunken-resort--8e81586b3d",
+    "name": "Sunken Resort — All floors",
+    "area": "Sunken Resort",
+    "imageUrl": "https://static.wikitide.net/monstersandmemorieswiki/5/5b/Sunken_resort.png",
+    "sourceUrl": "https://monstersandmemories.miraheze.org/wiki/File:Sunken_resort.png",
+    "credit": "Sunken Resort · Community wiki map. See Wiki source for the original author and image license.",
+    "discoveredFrom": "https://www.mnmatlas.com/sunken-resort/",
+    "checkedOn": "2026-10-16"
+  },
+  {
+    "id": "tel-ekir--26b98b1b56",
+    "name": "Tel Ekir — Isometric",
+    "area": "Tel Ekir",
+    "imageUrl": "https://static.wikitide.net/monstersandmemorieswiki/f/f7/Tel-ekir-isometric.jpg",
+    "sourceUrl": "https://monstersandmemories.miraheze.org/wiki/File:Tel-ekir-isometric.jpg",
+    "credit": "Tel Ekir · Community wiki map. See Wiki source for the original author and image license.",
+    "discoveredFrom": "https://www.mnmatlas.com/tel-ekir/",
+    "checkedOn": "2026-10-16"
+  },
+  {
+    "id": "tomb-of-the-last-wyrmsbane--d064013d67",
+    "name": "Tomb of the Last Wyrmsbane — Combined map",
+    "area": "Tomb of the Last Wyrmsbane",
+    "imageUrl": "https://static.wikitide.net/monstersandmemorieswiki/f/f7/WyrmsbaneCombined_v0.91.png",
+    "sourceUrl": "https://monstersandmemories.miraheze.org/wiki/File:WyrmsbaneCombined_v0.91.png",
+    "credit": "Tomb of the Last Wyrmsbane · Community wiki map. See Wiki source for the original author and image license.",
+    "discoveredFrom": "https://www.mnmatlas.com/wyrmsbane-tomb/",
+    "checkedOn": "2026-10-16"
+  },
+  {
+    "id": "tomb-of-the-last-wyrmsbane--d3f4137fd6",
+    "name": "Tomb of the Last Wyrmsbane — Isometric",
+    "area": "Tomb of the Last Wyrmsbane",
+    "imageUrl": "https://static.wikitide.net/monstersandmemorieswiki/f/fa/TombOfTheLastWyrmsbaneIsometric.jpg",
+    "sourceUrl": "https://monstersandmemories.miraheze.org/wiki/File:TombOfTheLastWyrmsbaneIsometric.jpg",
+    "credit": "Tomb of the Last Wyrmsbane · Community wiki map. See Wiki source for the original author and image license.",
+    "discoveredFrom": "https://storiesofmnm.com/zone/tomb-of-the-last-wyrmsbane/",
+    "checkedOn": "2026-10-16"
+  },
+  {
+    "id": "underdocks",
+    "name": "Underdocks",
+    "imageUrl": "https://static.wikitide.net/monstersandmemorieswiki/0/00/Underdocks_map.png",
+    "sourceUrl": "https://monstersandmemories.miraheze.org/wiki/File:Underdocks_map.png"
+  },
+  {
+    "id": "underdocks--f955cb0abe",
+    "name": "Underdocks — Lower city",
+    "area": "Underdocks",
+    "imageUrl": "https://static.wikitide.net/monstersandmemorieswiki/c/c8/UnderdocksBottomFloorCity.png",
+    "sourceUrl": "https://monstersandmemories.miraheze.org/wiki/File:UnderdocksBottomFloorCity.png",
+    "credit": "Underdocks · Community wiki map. See Wiki source for the original author and image license.",
+    "discoveredFrom": "https://www.mnmatlas.com/underdocks/",
+    "checkedOn": "2026-10-16"
+  },
+  {
+    "id": "vale-of-zintar",
+    "name": "Vale of Zintar",
+    "imageUrl": "https://static.wikitide.net/monstersandmemorieswiki/0/04/Vale_of_Zintar_Map.png",
+    "sourceUrl": "https://monstersandmemories.miraheze.org/wiki/File:Vale_of_Zintar_Map.png"
+  }
+]

@@ -1,0 +1,17 @@
+.vs/
+.idea/
+.vscode/
+**/bin/
+**/obj/
+artifacts/
+TestResults/
+__pycache__/
+*.pyc
+*.user
+*.suo
+*.log
+.env
+*.env
+settings.json
+settings.json.tmp
+settings-recovery-*.json
