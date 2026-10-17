@@ -27,7 +27,49 @@ try {
             $iconHeight = [Math]::Max(1, [int][Math]::Round($iconSource.Height * $iconScale))
             $iconRectangle = [System.Drawing.Rectangle]::new([int](($iconSize - $iconWidth) / 2), [int](($iconSize - $iconHeight) / 2), $iconWidth, $iconHeight)
             $iconGraphics.DrawImage($iconSource, $iconRectangle, 0, 0, $iconSource.Width, $iconSource.Height, [System.Drawing.GraphicsUnit]::Pixel, $iconImageAttributes)
-            $iconBitmap.Save($iconFrameStream, [System.Drawing.Imaging.ImageFormat]::Png)
+            if ($iconSize -eq 256) {
+                $iconBitmap.Save($iconFrameStream, [System.Drawing.Imaging.ImageFormat]::Png)
+            }
+            else {
+                # Small native icon consumers expect a DIB header, bottom-up BGRA
+                # pixels, and a DWORD-aligned transparency mask. Keep PNG for 256px.
+                $iconFrameWriter = [System.IO.BinaryWriter]::new($iconFrameStream, [System.Text.Encoding]::UTF8, $true)
+                try {
+                    $iconMaskStride = [int]([Math]::Ceiling($iconSize / 32.0) * 4)
+                    $iconPixelLength = $iconSize * $iconSize * 4
+                    $iconFrameWriter.Write([uint32]40)
+                    $iconFrameWriter.Write([int32]$iconSize)
+                    $iconFrameWriter.Write([int32]($iconSize * 2))
+                    $iconFrameWriter.Write([uint16]1)
+                    $iconFrameWriter.Write([uint16]32)
+                    $iconFrameWriter.Write([uint32]0)
+                    $iconFrameWriter.Write([uint32]($iconPixelLength + $iconMaskStride * $iconSize))
+                    $iconFrameWriter.Write([int32]0)
+                    $iconFrameWriter.Write([int32]0)
+                    $iconFrameWriter.Write([uint32]0)
+                    $iconFrameWriter.Write([uint32]0)
+                    $iconBitmapBounds = [System.Drawing.Rectangle]::new(0, 0, $iconSize, $iconSize)
+                    $iconBitmapData = $iconBitmap.LockBits($iconBitmapBounds, [System.Drawing.Imaging.ImageLockMode]::ReadOnly, [System.Drawing.Imaging.PixelFormat]::Format32bppArgb)
+                    try {
+                        $iconPixelBytes = [byte[]]::new($iconBitmapData.Stride * $iconSize)
+                        [System.Runtime.InteropServices.Marshal]::Copy($iconBitmapData.Scan0, $iconPixelBytes, 0, $iconPixelBytes.Length)
+                        $iconMask = [byte[]]::new($iconMaskStride * $iconSize)
+                        for ($iconRow = $iconSize - 1; $iconRow -ge 0; $iconRow--) {
+                            $iconRowOffset = $iconRow * $iconBitmapData.Stride
+                            $iconFrameWriter.Write($iconPixelBytes, $iconRowOffset, $iconSize * 4)
+                            for ($iconColumn = 0; $iconColumn -lt $iconSize; $iconColumn++) {
+                                if ($iconPixelBytes[$iconRowOffset + $iconColumn * 4 + 3] -eq 0) {
+                                    $iconMaskOffset = ($iconSize - 1 - $iconRow) * $iconMaskStride + [int][Math]::Floor($iconColumn / 8.0)
+                                    $iconMask[$iconMaskOffset] = [byte]($iconMask[$iconMaskOffset] -bor (128 -shr ($iconColumn % 8)))
+                                }
+                            }
+                        }
+                        $iconFrameWriter.Write($iconMask)
+                    }
+                    finally { $iconBitmap.UnlockBits($iconBitmapData) }
+                }
+                finally { $iconFrameWriter.Dispose() }
+            }
             $iconFrames.Add($iconFrameStream.ToArray())
         }
         finally {
@@ -40,7 +82,7 @@ try {
 }
 finally { $iconSource.Dispose() }
 
-# Modern Windows ICO files support PNG image data while retaining full alpha.
+# The directory indexes native DIB frames plus a compressed 256px PNG frame.
 $iconFileStream = [System.IO.File]::Create($iconOutputPath)
 $iconWriter = [System.IO.BinaryWriter]::new($iconFileStream)
 try {

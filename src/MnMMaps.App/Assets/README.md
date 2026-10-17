@@ -1,6 +1,6 @@
 # Application icon
 
-`MnMMaps.png` is the transparent master artwork. `MnMMaps.ico` contains 32-bit PNG frames at 16, 20, 24, 32, 40, 48, 64, 96, 128, and 256 pixels for Windows display scaling. The executable, WPF window/taskbar, and notification-area icon use the same ICO resource; no external icon file is required at runtime.
+`MnMMaps.png` is the transparent master artwork. `MnMMaps.ico` contains 32-bit frames at 16, 20, 24, 32, 40, 48, 64, 96, 128, and 256 pixels for Windows display scaling. Sizes below 256 pixels use native DIB data with alpha and a transparency mask for small-icon compatibility; the 256-pixel frame uses PNG compression. The executable, WPF window/taskbar, and notification-area icon use the same ICO resource; no external icon file is required at runtime.
 
 The artwork was generated with the built-in image generation tool on October 17, 2026 for this application. It is included with this project's MIT-licensed assets and is independent of the game's official artwork and logos.
 
