@@ -17,6 +17,7 @@ public sealed class OverlayControls : IDisposable
     private readonly IntPtr handle;
     private readonly HwndSource source;
     private readonly Forms.NotifyIcon tray;
+    private readonly System.Drawing.Icon trayIcon;
     private readonly Forms.ContextMenuStrip menu;
     private bool disposed;
     public bool CanToggle { get; }
@@ -28,6 +29,11 @@ public sealed class OverlayControls : IDisposable
         this.window = window;
         this.toggle = toggle;
         this.toggleLock = toggleLock;
+        var iconResource = Application.GetResourceStream(new Uri("pack://application:,,,/Assets/MnMMaps.ico", UriKind.Absolute))
+            ?? throw new InvalidOperationException("The application icon was not found.");
+        using (var iconStream = iconResource.Stream)
+        using (var icon = new System.Drawing.Icon(iconStream, Forms.SystemInformation.SmallIconSize))
+            trayIcon = (System.Drawing.Icon)icon.Clone();
         handle = new WindowInteropHelper(window).Handle;
         source = HwndSource.FromHwnd(handle) ?? throw new InvalidOperationException("The overlay window was not created.");
         source.AddHook(WindowMessage);
@@ -38,7 +44,7 @@ public sealed class OverlayControls : IDisposable
         menu.Items.Add("Unlock mouse and show", null, (_, _) => Dispatch(showUnlocked));
         menu.Items.Add(new Forms.ToolStripSeparator());
         menu.Items.Add("Quit MnM Maps", null, (_, _) => Dispatch(window.Close));
-        tray = new Forms.NotifyIcon { Icon = System.Drawing.SystemIcons.Information, Text = "MnM Maps · Ctrl+Shift+M", ContextMenuStrip = menu, Visible = true };
+        tray = new Forms.NotifyIcon { Icon = trayIcon, Text = "MnM Maps · Ctrl+Shift+M", ContextMenuStrip = menu, Visible = true };
         tray.DoubleClick += (_, _) => Dispatch(toggle);
     }
 
@@ -71,6 +77,7 @@ public sealed class OverlayControls : IDisposable
         source.RemoveHook(WindowMessage);
         tray.Visible = false;
         tray.Dispose();
+        trayIcon.Dispose();
         menu.Dispose();
     }
 

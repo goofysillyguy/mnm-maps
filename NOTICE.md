@@ -2,7 +2,7 @@
 
 MnM Maps is an unofficial fan companion for Monsters & Memories. It is not affiliated with or endorsed by Niche Worlds Cult. Monsters & Memories and its game material belong to their respective owners.
 
-The application code, scripts, and project documentation are licensed under [MIT](LICENSE). That license does not grant rights to third party map artwork, the game, or the bundled Microsoft runtime.
+The application code, scripts, project documentation, and original application icon are licensed under [MIT](LICENSE). That license does not grant rights to third party map artwork, the game, or the bundled Microsoft runtime.
 
 ## Community maps
 

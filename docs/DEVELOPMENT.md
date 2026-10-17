@@ -19,6 +19,8 @@ dotnet run --project .\src\MnMMaps.App -c Release
 | `src/MnMMaps.App/Models.cs` | Catalog models and this app's local settings |
 | `src/MnMMaps.App/OverlayControls.cs` | Shortcuts, tray icon, and styles applied to our own window |
 | `src/MnMMaps.App/Data/maps.json` | Embedded map catalog, original sources, and discovery records |
+| `src/MnMMaps.App/Assets/` | Transparent master artwork and multi-size Windows application icon |
+| `scripts/update-app-icon.ps1` | Rebuild the ICO from the master PNG on Windows |
 | `scripts/publish-maps.ps1` | Self-contained Windows x64 EXE |
 | `scripts/package-release.ps1` | Portable ZIP and SHA-256 manifest |
 | `scripts/check-package.ps1` | Isolated packaged application check |
