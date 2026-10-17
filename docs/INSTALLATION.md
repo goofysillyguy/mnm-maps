@@ -62,11 +62,13 @@ The map selection is manual. There is no automatic zone detection, player marker
 
 Pins are personal annotations. They do not move your character or alter the map image. Different map drawings have separate pin lists, even when they describe the same zone.
 
-## Let mouse clicks pass through
+## Lock to show only the map
 
-Click **Lock** or press **Ctrl+Shift+L** to enable mouse passthrough. The whole overlay then ignores mouse clicks so the window below can receive them.
+Click **Lock** or press **Ctrl+Shift+L** to show only the map and your personal pins. The title, zone selector, buttons, sliders, pin panel, status text, borders, and resize grip disappear. The map stays at its current position and zoom, with the chosen opacity. Empty space around the map becomes transparent.
 
-To unlock, press **Ctrl+Shift+L** again. You can also right-click the MnM Maps tray icon near the Windows clock and choose **Unlock mouse and show**. Showing a hidden overlay with Ctrl+Shift+M also unlocks it.
+Lock also enables mouse passthrough: the whole overlay ignores mouse clicks so the window below can receive them.
+
+To restore the controls and mouse interaction, press **Ctrl+Shift+L** again. You can also right-click the MnM Maps tray icon near the Windows clock and choose **Unlock mouse and show**. Showing a hidden overlay with Ctrl+Shift+M also unlocks it. Unlock before changing the map, opacity, size, or pins.
 
 ## Import your own map image
 
@@ -116,7 +118,7 @@ Compare the result to the line for `MnMMaps.exe` in the manifest. For the ZIP, s
 | Overlay is behind the game | Enable **On top** and use windowed or borderless mode. Exclusive fullscreen can cover ordinary desktop windows. |
 | Clicking the overlay does nothing | Press Ctrl+Shift+L or use the tray menu's **Unlock mouse and show** command. |
 | Ctrl+Shift+M or Ctrl+Shift+L does not work | Another app may own that shortcut. Read the status line and use the tray menu. Mouse passthrough is disabled if its unlock shortcut could not be registered. |
-| Cannot find the tray icon | Expand the hidden-icons arrow near the clock. Look for the information icon whose tooltip says **MnM Maps**. |
+| Cannot find the tray icon | Expand the hidden-icons arrow near the clock. Look for the gold map-and-compass icon whose tooltip says **MnM Maps**. |
 | Map unavailable | Check the connection, then choose **Retry download**. A cached map works offline after a successful download. An original wiki image can also be moved or removed; **Import image** provides a local alternative. |
 | Missing a dungeon or floor | Check the [coverage table](MAPS.md). Some plans contain all floors on one image. For a separate map you have saved, use **Import image**. |
 | Installer says a file is in use | Quit the old app with **×** or its tray menu and rerun the installer. |

@@ -11,6 +11,10 @@ namespace MnMMaps;
 
 public sealed class MapSurface : FrameworkElement
 {
+    public static readonly DependencyProperty MapOnlyProperty = DependencyProperty.Register(
+        nameof(MapOnly), typeof(bool), typeof(MapSurface), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsRender));
+    public bool MapOnly { get => (bool)GetValue(MapOnlyProperty); set => SetValue(MapOnlyProperty, value); }
+
     private BitmapSource? image;
     private List<MapPin> pins = [];
     private Point offset;
@@ -171,7 +175,7 @@ public sealed class MapSurface : FrameworkElement
 
     protected override void OnRender(DrawingContext drawing)
     {
-        drawing.DrawRectangle(BackgroundBrush, null, new Rect(RenderSize));
+        if (!MapOnly) drawing.DrawRectangle(BackgroundBrush, null, new Rect(RenderSize));
         if (image is null) return;
         drawing.DrawImage(image, new Rect(offset.X, offset.Y, image.PixelWidth * scale, image.PixelHeight * scale));
         foreach (var pin in pins)

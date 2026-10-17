@@ -35,21 +35,23 @@ Windows may show an unknown-publisher prompt because these releases are not code
 | Control | Action |
 | --- | --- |
 | **Ctrl+Shift+M** | Show or hide the overlay |
-| **Ctrl+Shift+L** | Toggle mouse passthrough |
+| **Ctrl+Shift+L** | Toggle map-only lock and mouse passthrough; unlock restores the controls |
 | Mouse wheel | Zoom around the pointer |
 | Drag the map | Pan |
 | **Fit** | Fit the entire map in the window |
 | **Add pin**, then click the map | Save a named personal pin with optional notes |
 | **Escape** | Cancel pin placement |
 | **Pins** | Show the list; select a pin to center it, edit it, or remove it |
-| **Lock** | Enable mouse passthrough; use Ctrl+Shift+L or the tray menu to unlock |
+| **Lock** | Show only the map and personal pins, with mouse passthrough; Ctrl+Shift+L or the tray menu restores the controls |
 | **Opacity** | Change the transparency of the whole overlay |
 | **On top** | Keep the overlay above other windows |
 | Drag the title bar / lower right grip | Move / resize the window |
 | **Hide** | Keep running in the tray |
 | **×** | Quit |
 
-If the map ignores clicks, mouse passthrough is probably enabled. Press **Ctrl+Shift+L**, or right-click the tray icon and select **Unlock mouse and show**. If a shortcut is already used by another app, MnM Maps reports that in its status line; the tray icon remains available.
+Lock hides the title, map selector, buttons, sliders, pin panel, status text, borders, and resize grip. Only the map and your pins remain visible, at the same position and zoom. Unlock to change the map, opacity, window size, or pins.
+
+If the map ignores clicks, mouse passthrough is probably enabled. Press **Ctrl+Shift+L**, or right-click the tray icon and select **Unlock mouse and show**, to restore the controls and mouse interaction. If a shortcut is already used by another app, MnM Maps reports that in its status line; the tray icon remains available.
 
 ## Maps and dungeons
 

@@ -15,6 +15,11 @@ namespace MnMMaps;
 
 public partial class MainWindow : Window
 {
+    private static readonly DependencyPropertyKey IsMapOnlyPropertyKey = DependencyProperty.RegisterReadOnly(
+        nameof(IsMapOnly), typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
+    public static readonly DependencyProperty IsMapOnlyProperty = IsMapOnlyPropertyKey.DependencyProperty;
+    public bool IsMapOnly => (bool)GetValue(IsMapOnlyProperty);
+
     private const string Shortcuts = "Ctrl+Shift+M: show / hide   ·   Ctrl+Shift+L: click-through";
     private readonly MapStore store;
     private readonly MapImages images = new();
@@ -231,9 +236,7 @@ public partial class MainWindow : Window
 
     private void ShowUnlocked()
     {
-        controls?.SetLocked(false);
-        LockButton.Content = "Lock";
-        StatusText.Text = Shortcuts;
+        SetLocked(false);
         Show();
         Activate();
     }
@@ -242,10 +245,15 @@ public partial class MainWindow : Window
     {
         if (controls is null || !controls.CanLock) return;
         if (!IsVisible) Show();
-        SetPinMode(false);
-        controls.SetLocked(!controls.Locked);
-        LockButton.Content = controls.Locked ? "Locked" : "Lock";
-        StatusText.Text = controls.Locked ? "Mouse passes through · Ctrl+Shift+L unlocks · Ctrl+Shift+M hides" : Shortcuts;
+        SetLocked(!controls.Locked);
+    }
+
+    private void SetLocked(bool locked)
+    {
+        if (controls is null || (locked && !controls.CanLock)) return;
+        if (MapCanvas.PinMode) SetPinMode(false);
+        SetValue(IsMapOnlyPropertyKey, locked);
+        controls.SetLocked(locked);
     }
 
     private void Title_Drag(object sender, MouseButtonEventArgs e)
@@ -299,7 +307,7 @@ public partial class MainWindow : Window
     private void Help_Click(object sender, RoutedEventArgs e) => MessageBox.Show(this,
         "Select a map manually. Scroll to zoom; drag to pan; Fit resets the view.\n\n" +
         "Add pin, then click the map. Pins and notes belong to this app and are saved per map.\n\n" +
-        "Ctrl+Shift+M: show / hide\nCtrl+Shift+L: lock / unlock mouse passthrough\nUse the tray icon if a shortcut is taken. Closing the × quits; Hide keeps the app available.\n\n" +
+        "Ctrl+Shift+M: show / hide\nCtrl+Shift+L: map-only lock / restore controls\nLock hides the window controls and lets mouse clicks pass through. Your map position, zoom, and personal pins stay visible.\nThe tray menu's Unlock mouse and show also restores the controls. Closing the × quits; Hide keeps the app available.\n\n" +
         "Use the game in windowed or borderless mode. Exclusive fullscreen may cover the overlay.\n\n" +
         "Maps are downloaded from the community wiki's image server and cached for offline use. Wiki source opens each image's attribution and license page. Map images are not bundled with the executable.\n\n" +
         "This app does not access the game process, game files, screen contents, or game network traffic. No automatic location or zone tracking.\n\n" +
