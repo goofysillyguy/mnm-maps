@@ -12,7 +12,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon>Assets\MnMMaps.ico</ApplicationIcon>
     <Description>A standalone, manually controlled map reference for Monsters and Memories.</Description>
-    <Version>0.1.0</Version>
+    <Version>0.1.1</Version>
     <Product>MnM Maps</Product>
     <RepositoryUrl>https://github.com/goofysillyguy/mnm-maps</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
