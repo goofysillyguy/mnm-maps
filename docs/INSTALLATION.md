@@ -2,9 +2,10 @@
 
 ## Requirements
 
-- A Windows x64 PC. Windows 11 is the recommended setup for the current release.
+- Windows 10 version 2004 or newer, x64. Windows 11 is supported.
 - Monsters & Memories in windowed or borderless mode when using the overlay above the game.
-- Internet access when downloading a wiki map for the first time. Cached maps and imported images work offline.
+- Microsoft Edge WebView2 Runtime for the interactive Atlas view. If it is missing, use the app's **Get WebView2 Runtime** link to [Microsoft's download page](https://developer.microsoft.com/en-us/microsoft-edge/webview2/consumer/), install the Evergreen Runtime, and choose **Retry Atlas**.
+- Internet access for uncached Atlas resources and online features, or when downloading a wiki image for the first time. Cached wiki maps and imported images work offline.
 
 The published release includes the .NET desktop runtime. You do not need Python, Visual Studio, a game addon, an API key, or administrator access to install or run it. Builds for macOS, Linux, or Windows ARM64 are not provided.
 
@@ -25,7 +26,7 @@ The published release includes the .NET desktop runtime. You do not need Python,
 
 1. Download `MnMMaps.exe` into a folder you control, such as `Documents\MnM Maps`.
 2. Double-click the EXE.
-3. Select a map in the dropdown. The first download may take a moment for large maps.
+3. Use Atlas's map selector and search menu, or choose **Wiki maps** for the original image viewer. The first load needs internet access.
 
 The program saves its data under `%LOCALAPPDATA%\MnMMaps`, independently of the EXE's location. Moving the EXE later does not move or erase those settings.
 
@@ -35,7 +36,7 @@ The program saves its data under `%LOCALAPPDATA%\MnMMaps`, independently of the 
 2. Right-click it and choose **Extract All**. Open the extracted folder; run the files after extraction, rather than from inside the ZIP preview.
 3. Double-click `install.bat`.
 4. The installer copies program files into `%LOCALAPPDATA%\Programs\MnMMaps` and creates **MnM Maps** in your Start Menu.
-5. Open **MnM Maps** from Start and select a map.
+5. Open **MnM Maps** from Start and choose a map in Atlas or the **Wiki maps** view.
 
 The installer uses your Windows account. It does not need administrator privileges and does not add the app to Windows startup. It leaves your existing pins and settings in place.
 
@@ -54,6 +55,10 @@ The map selection is manual. There is no automatic zone detection, player marker
 
 ## Zoom, pan, and annotate
 
+In **MnM Atlas**, use the website's own map selection, search, floors, markers, personal notes, and import/export menus. Ctrl+F opens its search, Ctrl+L selects the app's Atlas address, F5 reloads, Alt+Left/Right navigates history, and Alt+Home opens the world map. Its other page shortcuts and normal text entry remain available. [The Atlas guide](ATLAS.md) explains pop-ups, sign-in, downloads, notes, and fullscreen.
+
+The following controls apply to **Wiki maps**:
+
 - Roll the mouse wheel over the map to zoom around the pointer. The **+** and **−** buttons zoom around the middle of the window.
 - Drag the image to pan. Press **Fit** to see the whole map again.
 - Click **Add pin**, then click a location on the map. Enter a name and optional notes and choose **Save pin**.
@@ -65,6 +70,8 @@ Pins are personal annotations. They do not move your character or alter the map 
 ## Lock to show only the map
 
 Click **Lock** or press **Ctrl+Shift+L** to show only the map and your personal pins. The title, zone selector, buttons, sliders, pin panel, status text, borders, and resize grip disappear. The map stays at its current position and zoom, with the chosen opacity. Empty space around the map becomes transparent.
+
+In Atlas, locking also hides the website's controls and panels while retaining its map, markers, and attribution. Atlas pop-ups hide while locked or hidden and return after showing and unlocking. Unlock restores the existing page without reloading it.
 
 Lock also enables mouse passthrough: the whole overlay ignores mouse clicks so the window below can receive them.
 
@@ -91,7 +98,7 @@ Keep `%LOCALAPPDATA%\MnMMaps` to preserve your settings, cached maps, and pins. 
 2. Press **Win+R**, enter `%LOCALAPPDATA%\MnMMaps`, and press Enter.
 3. Copy the whole folder to your backup location.
 
-`settings.json` contains pins, notes, selected map, window preferences, and views. The `images` folder contains cached wiki images and copies of imported maps. Backing up both retains offline access as well as annotations.
+`settings.json` contains Wiki maps pins, the selected viewer and maps, window preferences, and views. The `images` folder contains cached wiki images and copies of imported maps. Atlas notes and sign-in are stored separately in `atlas-browser`. That profile is independent of your usual browser; use Atlas's own Export and Import to move notes and make portable backups. Backing up the entire MnMMaps folder retains the local files.
 
 To restore on the same Windows account and path, quit the app and put the saved folder back in the same location. If you move a backup to a different account or directory, imported-image paths may need to be updated or those images imported again. Keep the backup until you have checked your notes.
 
@@ -119,6 +126,10 @@ Compare the result to the line for `MnMMaps.exe` in the manifest. For the ZIP, s
 | Clicking the overlay does nothing | Press Ctrl+Shift+L or use the tray menu's **Unlock mouse and show** command. |
 | Ctrl+Shift+M or Ctrl+Shift+L does not work | Another app may own that shortcut. Read the status line and use the tray menu. Mouse passthrough is disabled if its unlock shortcut could not be registered. |
 | Cannot find the tray icon | Expand the hidden-icons arrow near the clock. Look for the gold map-and-compass icon whose tooltip says **MnM Maps**. |
+| Atlas browser unavailable | Install or repair Microsoft Edge WebView2 Runtime using the app's download link, then retry. Wiki maps remains available. |
+| Atlas could not load | Check internet access and choose Reload or Retry Atlas. Cached Wiki maps provide an offline fallback. |
+| Existing Atlas notes are missing | The app has its own browser profile. Export notes in your usual browser, then import them inside the overlay. |
+| Atlas sign-in or a site feature does not finish | Keep the overlay unlocked, use the site's visible status, and try Reload. The site and identity provider control their online features. Report the map, visible error, and steps to reproduce the problem. |
 | Map unavailable | Check the connection, then choose **Retry download**. A cached map works offline after a successful download. An original wiki image can also be moved or removed; **Import image** provides a local alternative. |
 | Missing a dungeon or floor | Check the [coverage table](MAPS.md). Some plans contain all floors on one image. For a separate map you have saved, use **Import image**. |
 | Installer says a file is in use | Quit the old app with **×** or its tray menu and rerun the installer. |

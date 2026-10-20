@@ -6,7 +6,7 @@ param(
 $ErrorActionPreference = 'Stop'
 $mapUninstallRoot = [System.IO.Path]::GetFullPath($InstallDirectory)
 $mapShortcutRoot = [System.IO.Path]::GetFullPath($ShortcutDirectory)
-$mapKnownProgramFiles = @('MnMMaps.exe','README.md','LICENSE','NOTICE.md','install.bat','install.ps1','uninstall.bat','uninstall.ps1','docs\INSTALLATION.md','docs\MAPS.md')
+$mapKnownProgramFiles = @('MnMMaps.exe','README.md','LICENSE','NOTICE.md','install.bat','install.ps1','uninstall.bat','uninstall.ps1','docs\INSTALLATION.md','docs\MAPS.md','docs\ATLAS.md','docs\third-party\WebView2-LICENSE.txt','docs\third-party\WebView2-NOTICE.txt')
 foreach ($mapKnownProgramFile in $mapKnownProgramFiles) {
     $mapRemovalTarget = [System.IO.Path]::GetFullPath((Join-Path $mapUninstallRoot $mapKnownProgramFile))
     if (-not $mapRemovalTarget.StartsWith($mapUninstallRoot.TrimEnd('\') + '\', [StringComparison]::OrdinalIgnoreCase)) {
@@ -20,6 +20,10 @@ foreach ($mapKnownProgramFile in $mapKnownProgramFiles) {
 $mapShortcutPath = Join-Path $mapShortcutRoot 'MnM Maps.lnk'
 if (Test-Path -LiteralPath $mapShortcutPath -PathType Leaf) { Remove-Item -LiteralPath $mapShortcutPath -Force }
 # Remove only empty directories. Personal app data and unrecognized files stay in place.
+$mapNoticesPath = Join-Path $mapUninstallRoot 'docs\third-party'
+if ((Test-Path -LiteralPath $mapNoticesPath -PathType Container) -and @(Get-ChildItem -LiteralPath $mapNoticesPath -Force).Count -eq 0) {
+    Remove-Item -LiteralPath $mapNoticesPath
+}
 $mapDocumentsPath = Join-Path $mapUninstallRoot 'docs'
 if ((Test-Path -LiteralPath $mapDocumentsPath -PathType Container) -and @(Get-ChildItem -LiteralPath $mapDocumentsPath -Force).Count -eq 0) {
     Remove-Item -LiteralPath $mapDocumentsPath

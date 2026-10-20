@@ -11,14 +11,18 @@ if (-not (Test-Path -LiteralPath $mapBuiltExe)) { throw 'Build the standalone EX
 $mapReleaseRoot = Join-Path $mapPackageRoot 'artifacts\release'
 $mapReleaseStage = Join-Path $mapPackageRoot ('artifacts\release-stage-' + [guid]::NewGuid().ToString('N'))
 New-Item -ItemType Directory -Path (Join-Path $mapReleaseStage 'docs') -Force | Out-Null
+New-Item -ItemType Directory -Path (Join-Path $mapReleaseStage 'docs\third-party') -Force | Out-Null
 New-Item -ItemType Directory -Path $mapReleaseRoot -Force | Out-Null
 Copy-Item -LiteralPath $mapBuiltExe -Destination (Join-Path $mapReleaseStage 'MnMMaps.exe')
 Copy-Item -LiteralPath $mapBuiltExe -Destination (Join-Path $mapReleaseRoot 'MnMMaps.exe') -Force
 foreach ($mapReleaseFile in @('README.md','LICENSE','NOTICE.md','install.bat','install.ps1','uninstall.bat','uninstall.ps1')) {
     Copy-Item -LiteralPath (Join-Path $mapPackageRoot $mapReleaseFile) -Destination (Join-Path $mapReleaseStage $mapReleaseFile)
 }
-foreach ($mapReleaseDocument in @('INSTALLATION.md','MAPS.md')) {
+foreach ($mapReleaseDocument in @('INSTALLATION.md','MAPS.md','ATLAS.md')) {
     Copy-Item -LiteralPath (Join-Path $mapPackageRoot ('docs\' + $mapReleaseDocument)) -Destination (Join-Path $mapReleaseStage ('docs\' + $mapReleaseDocument))
+}
+foreach ($mapReleaseNotice in @('WebView2-LICENSE.txt','WebView2-NOTICE.txt')) {
+    Copy-Item -LiteralPath (Join-Path $mapPackageRoot ('docs\third-party\' + $mapReleaseNotice)) -Destination (Join-Path $mapReleaseStage ('docs\third-party\' + $mapReleaseNotice))
 }
 $mapZip = Join-Path $mapReleaseRoot 'MnMMaps-win-x64.zip'
 Compress-Archive -Path (Join-Path $mapReleaseStage '*') -DestinationPath $mapZip -CompressionLevel Optimal -Force

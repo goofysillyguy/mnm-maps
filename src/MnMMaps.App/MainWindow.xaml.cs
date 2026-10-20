@@ -21,6 +21,8 @@ public partial class MainWindow : Window
     public bool IsMapOnly => (bool)GetValue(IsMapOnlyProperty);
 
     private const string Shortcuts = "Ctrl+Shift+M: show / hide   ·   Ctrl+Shift+L: click-through";
+    private string ShortcutStatus => controls is { CanToggle: false } or { CanLock: false }
+        ? $"Ctrl+Shift+M: {(controls.CanToggle ? "show / hide" : "in use; use tray")}   ·   Ctrl+Shift+L: {(controls.CanLock ? "click-through" : "in use; lock disabled")}" : Shortcuts;
     private readonly MapStore store;
     private readonly MapImages images = new();
     private readonly List<MapEntry> catalog;
@@ -31,6 +33,9 @@ public partial class MainWindow : Window
     private bool ready;
     private bool closing;
     private bool sidebarVisible;
+    private bool atlasActive;
+    private bool atlasFullScreen;
+    private WindowState beforeAtlasFullScreen;
 
     public MainWindow(MapStore store)
     {
@@ -38,8 +43,8 @@ public partial class MainWindow : Window
         catalog = store.LoadCatalog();
         InitializeComponent();
         var settings = store.Settings;
-        Width = double.IsFinite(settings.Width) ? Math.Clamp(settings.Width, MinWidth, 2400) : 880;
-        Height = double.IsFinite(settings.Height) ? Math.Clamp(settings.Height, MinHeight, 1600) : 700;
+        Width = double.IsFinite(settings.Width) ? Math.Clamp(settings.Width, MinWidth, 2400) : 1020;
+        Height = double.IsFinite(settings.Height) ? Math.Clamp(settings.Height, MinHeight, 1600) : 800;
         if (settings.Left is double left && settings.Top is double top && double.IsFinite(left) && double.IsFinite(top))
         {
             // Use current monitor bounds so a disconnected display cannot strand the overlay.
@@ -55,9 +60,23 @@ public partial class MainWindow : Window
         MapCanvas.ViewChanged += () => { ZoomText.Text = $"{MapCanvas.Zoom:P0} · scroll to zoom / drag to pan"; QueueSave(); };
         MapCanvas.PinRequested += AddPinAt;
         MapCanvas.PinSelected += pin => { ShowSidebar(true); PinList.SelectedItem = pin; };
+        AtlasView.AddressChanged += address =>
+        {
+            store.Settings.AtlasUrl = address;
+            if (!AtlasAddress.IsKeyboardFocusWithin) AtlasAddress.Text = address;
+            QueueSave();
+        };
+        AtlasView.StatusChanged += status => { if (atlasActive && !closing) StatusText.Text = status + "\n" + ShortcutStatus; };
+        AtlasView.HistoryChanged += () =>
+        {
+            AtlasBackButton.IsEnabled = AtlasView.CanGoBack;
+            AtlasForwardButton.IsEnabled = AtlasView.CanGoForward;
+        };
+        AtlasView.FullScreenChanged += fullScreen => Dispatcher.BeginInvoke(() => SetAtlasFullScreen(fullScreen));
         saveTimer.Tick += (_, _) => { saveTimer.Stop(); Save(); };
         LocationChanged += (_, _) => QueueSave();
         SizeChanged += (_, _) => QueueSave();
+        IsVisibleChanged += (_, _) => AtlasView.SetHostVisible(IsVisible && atlasActive);
         SourceInitialized += (_, _) =>
         {
             controls = new OverlayControls(this, ToggleVisibility, ToggleLock, ShowUnlocked);
@@ -66,10 +85,7 @@ public partial class MainWindow : Window
                 StatusText.Text = "A shortcut is already in use. The tray icon can show or hide the overlay; Lock needs Ctrl+Shift+L.";
         };
         Closing += Window_Closing;
-        PreviewKeyDown += (_, e) =>
-        {
-            if (e.Key == Key.Escape && MapCanvas.PinMode) { SetPinMode(false); e.Handled = true; }
-        };
+        PreviewKeyDown += Window_KeyDown;
     }
 
     public async Task InitializeAsync()
@@ -77,12 +93,106 @@ public partial class MainWindow : Window
         var selected = catalog.FirstOrDefault(map => map.Id == store.Settings.SelectedMap) ?? catalog.First();
         MapPicker.SelectedItem = selected;
         ready = true;
-        await LoadMapAsync(selected);
+        await SetViewerAsync(store.Settings.Viewer != "wiki");
+    }
+
+    private async Task SetViewerAsync(bool atlas)
+    {
+        if (closing) return;
+        if (controls?.Locked == true) SetLocked(false);
+        if (atlasFullScreen) await AtlasView.ExitFullScreenAsync();
+        atlasActive = atlas;
+        AtlasView.SetHostVisible(IsVisible && atlas);
+        store.Settings.Viewer = atlas ? "atlas" : "wiki";
+        AtlasView.Visibility = AtlasToolbar.Visibility = AtlasAddressRow.Visibility = atlas ? Visibility.Visible : Visibility.Collapsed;
+        WikiPanel.Visibility = WikiMapRow.Visibility = WikiTools.Visibility = atlas ? Visibility.Collapsed : Visibility.Visible;
+        AtlasModeButton.Background = new SolidColorBrush(atlas ? Color.FromRgb(104, 77, 42) : Color.FromRgb(48, 54, 60));
+        WikiModeButton.Background = new SolidColorBrush(atlas ? Color.FromRgb(48, 54, 60) : Color.FromRgb(104, 77, 42));
+        if (atlas)
+        {
+            CreditText.Text = "MnM Atlas by ocombe · Interactive community maps · Original map authors and credits in Atlas About";
+            CreditText.ToolTip = "Atlas notes are stored in this app's browser profile. Use the site's Export and Import to transfer notes from another browser.";
+            var address = AtlasView.HasBrowser ? AtlasView.Address :
+                AtlasBrowser.TryAddress(store.Settings.AtlasUrl, out var saved) ? saved.AbsoluteUri : AtlasBrowser.InitialUrl;
+            AtlasAddress.Text = address;
+            if (!AtlasView.HasBrowser) await AtlasView.OpenAsync(address, Path.Combine(store.Root, "atlas-browser"));
+            else StatusText.Text = "Atlas · Ctrl+F: search · Ctrl+L: map address · F5: reload\n" + ShortcutStatus;
+        }
+        else if (MapPicker.SelectedItem is MapEntry map)
+        {
+            CreditText.Text = map.Credit;
+            CreditText.ToolTip = map.Credit;
+            StatusText.Text = Shortcuts;
+            if (current != map || !MapCanvas.HasImage) await LoadMapAsync(map);
+        }
+        QueueSave();
+    }
+
+    private void SetAtlasFullScreen(bool fullScreen)
+    {
+        if (closing || fullScreen == atlasFullScreen || (fullScreen && !atlasActive)) return;
+        atlasFullScreen = fullScreen;
+        if (fullScreen) { beforeAtlasFullScreen = WindowState; WindowState = WindowState.Maximized; }
+        else WindowState = beforeAtlasFullScreen;
+        SetValue(IsMapOnlyPropertyKey, controls?.Locked == true || atlasFullScreen);
+    }
+
+    private void Window_KeyDown(object sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.Escape && MapCanvas.PinMode) { SetPinMode(false); e.Handled = true; return; }
+        if (!atlasActive || controls?.Locked == true) return;
+        var key = e.Key == Key.System ? e.SystemKey : e.Key;
+        var modifiers = Keyboard.Modifiers;
+        if (modifiers == ModifierKeys.Control && key == Key.L)
+        {
+            e.Handled = true;
+            Dispatcher.BeginInvoke(new Action(async () =>
+            {
+                if (atlasFullScreen) { await AtlasView.ExitFullScreenAsync(); SetAtlasFullScreen(false); }
+                AtlasAddress.Focus(); AtlasAddress.SelectAll();
+            }));
+            return;
+        }
+        // Composition-control accelerator callbacks block the browser; queue browser work
+        // until after that callback has returned, as required by WebView2.
+        Action? action = null;
+        if (modifiers == ModifierKeys.Control && key == Key.F && !AtlasView.IsKeyboardFocusWithin)
+            action = async () => await AtlasView.SearchAsync();
+        else if ((modifiers == ModifierKeys.None && key == Key.F5) || (modifiers == ModifierKeys.Control && key == Key.R))
+            action = async () => await AtlasView.ReloadAsync();
+        else if (modifiers == ModifierKeys.Alt && key == Key.Left) action = AtlasView.Back;
+        else if (modifiers == ModifierKeys.Alt && key == Key.Right) action = AtlasView.Forward;
+        else if (modifiers == ModifierKeys.Alt && key == Key.Home) action = async () => await OpenAtlasAddressAsync(AtlasBrowser.HomeUrl);
+        if (action is null) return;
+        e.Handled = true;
+        Dispatcher.BeginInvoke(action);
+    }
+
+    private async Task OpenAtlasAddressAsync(string address)
+    {
+        await AtlasView.OpenAsync(address, Path.Combine(store.Root, "atlas-browser"));
+        AtlasView.FocusPage();
+    }
+    private async void AtlasMode_Click(object sender, RoutedEventArgs e) => await SetViewerAsync(true);
+    private async void WikiMode_Click(object sender, RoutedEventArgs e) => await SetViewerAsync(false);
+    private void AtlasBack_Click(object sender, RoutedEventArgs e) => AtlasView.Back();
+    private void AtlasForward_Click(object sender, RoutedEventArgs e) => AtlasView.Forward();
+    private async void AtlasReload_Click(object sender, RoutedEventArgs e) => await AtlasView.ReloadAsync();
+    private async void AtlasHome_Click(object sender, RoutedEventArgs e) => await OpenAtlasAddressAsync(AtlasBrowser.HomeUrl);
+    private async void AtlasSearch_Click(object sender, RoutedEventArgs e) => await AtlasView.SearchAsync();
+    private async void AtlasGo_Click(object sender, RoutedEventArgs e) => await OpenAtlasAddressAsync(AtlasAddress.Text);
+    private void AtlasExternal_Click(object sender, RoutedEventArgs e) => AtlasView.OpenExternal(AtlasView.Address);
+    private async void AtlasAddress_KeyDown(object sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.Escape) { AtlasAddress.Text = AtlasView.Address; AtlasView.FocusPage(); e.Handled = true; return; }
+        if (e.Key != Key.Enter) return;
+        e.Handled = true;
+        await OpenAtlasAddressAsync(AtlasAddress.Text);
     }
 
     private async void Map_Changed(object sender, SelectionChangedEventArgs e)
     {
-        if (ready && MapPicker.SelectedItem is MapEntry map) await LoadMapAsync(map);
+        if (ready && !atlasActive && MapPicker.SelectedItem is MapEntry map) await LoadMapAsync(map);
     }
 
     private async Task LoadMapAsync(MapEntry map, bool refresh = false)
@@ -112,7 +222,7 @@ public partial class MainWindow : Window
             MapCanvas.SetMap(bitmap, store.PinsFor(map.Id), view);
             EmptyPanel.Visibility = Visibility.Collapsed;
             AddPinButton.IsEnabled = true;
-            StatusText.Text = controls is { CanToggle: false } or { CanLock: false }
+            if (!atlasActive) StatusText.Text = controls is { CanToggle: false } or { CanLock: false }
                 ? "A shortcut is unavailable. Use the tray icon to show or hide MnM Maps." : Shortcuts;
             QueueSave();
         }
@@ -124,7 +234,7 @@ public partial class MainWindow : Window
             EmptyDetail.Text = "The image could not be opened. Retry when online, or use Import image to open a map saved on your PC.";
             EmptyDetail.ToolTip = exception.Message;
             RetryButton.Visibility = map.LocalFile is null ? Visibility.Visible : Visibility.Collapsed;
-            StatusText.Text = "Download or image error: " + exception.Message;
+            if (!atlasActive) StatusText.Text = "Download or image error: " + exception.Message;
         }
         finally
         {
@@ -239,6 +349,7 @@ public partial class MainWindow : Window
         SetLocked(false);
         Show();
         Activate();
+        if (atlasActive) { _ = AtlasView.ExitFullScreenAsync(); AtlasView.FocusPage(); }
     }
 
     private void ToggleLock()
@@ -248,12 +359,17 @@ public partial class MainWindow : Window
         SetLocked(!controls.Locked);
     }
 
-    private void SetLocked(bool locked)
+    private async void SetLocked(bool locked)
     {
         if (controls is null || (locked && !controls.CanLock)) return;
+        if (!locked && atlasFullScreen) { await AtlasView.ExitFullScreenAsync(); SetAtlasFullScreen(false); }
         if (MapCanvas.PinMode) SetPinMode(false);
-        SetValue(IsMapOnlyPropertyKey, locked);
+        SetValue(IsMapOnlyPropertyKey, locked || atlasFullScreen);
         controls.SetLocked(locked);
+        LockButton.Content = locked ? "Unlock" : "Lock";
+        if (locked) { Keyboard.ClearFocus(); Focus(); }
+        await AtlasView.SetLockedAsync(locked);
+        if (!locked && atlasActive && !closing) AtlasView.FocusPage();
     }
 
     private void Title_Drag(object sender, MouseButtonEventArgs e)
@@ -275,7 +391,8 @@ public partial class MainWindow : Window
     private void Lock_Click(object sender, RoutedEventArgs e) => ToggleLock();
     private void Hide_Click(object sender, RoutedEventArgs e) { Save(); Hide(); }
     private void Quit_Click(object sender, RoutedEventArgs e) => Close();
-    private void Topmost_Click(object sender, RoutedEventArgs e) { Topmost = TopmostBox.IsChecked == true; QueueSave(); }
+    private void Topmost_Click(object sender, RoutedEventArgs e)
+    { Topmost = TopmostBox.IsChecked == true; AtlasView.SetTopmost(Topmost); QueueSave(); }
     private void Opacity_Changed(object sender, RoutedPropertyChangedEventArgs<double> e)
     { if (ready) { Opacity = e.NewValue; QueueSave(); } }
     private async void Retry_Click(object sender, RoutedEventArgs e) { if (current is not null) await LoadMapAsync(current, refresh: true); }
@@ -305,11 +422,13 @@ public partial class MainWindow : Window
     }
 
     private void Help_Click(object sender, RoutedEventArgs e) => MessageBox.Show(this,
-        "Select a map manually. Scroll to zoom; drag to pan; Fit resets the view.\n\n" +
-        "Add pin, then click the map. Pins and notes belong to this app and are saved per map.\n\n" +
+        "MnM Atlas displays the live interactive website: choose maps and floors, search places and trainers, use markers, and add or import/export personal notes. Its site menus and keyboard controls remain available.\n\n" +
+        "Atlas shortcuts: Ctrl+F search; Ctrl+L map address; F5 or Ctrl+R reload; Alt+Left / Alt+Right back / forward; Alt+Home world map. Copy and paste, text entry, and the site's own shortcuts work inside the page.\n\n" +
+        "Atlas notes and sign-in use this app's persistent browser profile, separate from your usual browser. Use the site's Export and Import to move your notes. Sign-in can use this window or an Atlas popup; external wiki links open your usual browser.\n\n" +
+        "Wiki maps keeps the original image viewer, offline cache, image import, and separate per-map pins. Scroll to zoom; drag to pan; Fit resets the view.\n\n" +
         "Ctrl+Shift+M: show / hide\nCtrl+Shift+L: map-only lock / restore controls\nLock hides the window controls and lets mouse clicks pass through. Your map position, zoom, and personal pins stay visible.\nThe tray menu's Unlock mouse and show also restores the controls. Closing the × quits; Hide keeps the app available.\n\n" +
         "Use the game in windowed or borderless mode. Exclusive fullscreen may cover the overlay.\n\n" +
-        "Maps are downloaded from the community wiki's image server and cached for offline use. Wiki source opens each image's attribution and license page. Map images are not bundled with the executable.\n\n" +
+        "Atlas needs Microsoft Edge WebView2 Runtime and an internet connection for uncached content. Its credits stay on the map. Wiki source opens each original image's attribution and license page.\n\n" +
         "This app does not access the game process, game files, screen contents, or game network traffic. No automatic location or zone tracking.\n\n" +
         "Interface ideas: Amy Lindley's Mo Betta Quests and Mo Betta Crafts. Independent implementation.\n\n" +
         "Settings, map cache and personal pins: " + store.Root,
@@ -323,11 +442,14 @@ public partial class MainWindow : Window
         saveTimer.Stop();
         imageCancellation?.Cancel();
         controls?.Dispose();
+        AtlasView.Dispose();
         images.Dispose();
     }
 
     internal void PreparePreview(MapEntry map, System.Windows.Media.Imaging.BitmapSource bitmap)
     {
+        AtlasView.Visibility = AtlasToolbar.Visibility = AtlasAddressRow.Visibility = Visibility.Collapsed;
+        WikiPanel.Visibility = WikiMapRow.Visibility = WikiTools.Visibility = Visibility.Visible;
         current = map;
         MapPicker.SelectedItem = catalog.First(entry => entry.Id == map.Id);
         MapCanvas.SetMap(bitmap, store.PinsFor(map.Id));

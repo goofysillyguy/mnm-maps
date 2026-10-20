@@ -25,11 +25,20 @@ $mapDocumentationSource = Join-Path $PSScriptRoot 'docs'
 if (Test-Path -LiteralPath $mapDocumentationSource) {
     $mapDocumentationTarget = Join-Path $mapInstallRoot 'docs'
     New-Item -ItemType Directory -Path $mapDocumentationTarget -Force | Out-Null
-    foreach ($mapDocumentName in @('INSTALLATION.md','MAPS.md')) {
+    foreach ($mapDocumentName in @('INSTALLATION.md','MAPS.md','ATLAS.md')) {
         $mapDocumentSource = Join-Path $mapDocumentationSource $mapDocumentName
         $mapDocumentDestination = Join-Path $mapDocumentationTarget $mapDocumentName
         if ((Test-Path -LiteralPath $mapDocumentSource) -and [System.IO.Path]::GetFullPath($mapDocumentSource) -ne $mapDocumentDestination) {
             Copy-Item -LiteralPath $mapDocumentSource -Destination $mapDocumentDestination -Force
+        }
+    }
+    $mapNoticesTarget = Join-Path $mapDocumentationTarget 'third-party'
+    New-Item -ItemType Directory -Path $mapNoticesTarget -Force | Out-Null
+    foreach ($mapNoticeName in @('WebView2-LICENSE.txt','WebView2-NOTICE.txt')) {
+        $mapNoticeSource = Join-Path $mapDocumentationSource ('third-party\' + $mapNoticeName)
+        $mapNoticeDestination = Join-Path $mapNoticesTarget $mapNoticeName
+        if ((Test-Path -LiteralPath $mapNoticeSource) -and [System.IO.Path]::GetFullPath($mapNoticeSource) -ne $mapNoticeDestination) {
+            Copy-Item -LiteralPath $mapNoticeSource -Destination $mapNoticeDestination -Force
         }
     }
 }

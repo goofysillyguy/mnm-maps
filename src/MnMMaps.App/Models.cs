@@ -38,12 +38,14 @@ public sealed class MapView
 
 public sealed class OverlaySettings
 {
-    public double Width { get; set; } = 880;
-    public double Height { get; set; } = 700;
+    public double Width { get; set; } = 1020;
+    public double Height { get; set; } = 800;
     public double? Left { get; set; }
     public double? Top { get; set; }
     public double Opacity { get; set; } = 0.95;
     public bool Topmost { get; set; } = true;
+    public string Viewer { get; set; } = "atlas";
+    public string AtlasUrl { get; set; } = AtlasBrowser.InitialUrl;
     public string SelectedMap { get; set; } = "night-harbor";
     public List<MapEntry> ImportedMaps { get; set; } = [];
     public Dictionary<string, List<MapPin>> Pins { get; set; } = [];

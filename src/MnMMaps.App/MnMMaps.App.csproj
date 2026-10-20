@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net10.0-windows</TargetFramework>
+    <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>disable</ImplicitUsings>
@@ -12,12 +12,13 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon>Assets\MnMMaps.ico</ApplicationIcon>
     <Description>A standalone, manually controlled map reference for Monsters and Memories.</Description>
-    <Version>0.1.1</Version>
+    <Version>0.2.0</Version>
     <Product>MnM Maps</Product>
     <RepositoryUrl>https://github.com/goofysillyguy/mnm-maps</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.4258.31" />
     <EmbeddedResource Include="Data\maps.json" />
     <Resource Include="Assets\MnMMaps.ico" />
   </ItemGroup>

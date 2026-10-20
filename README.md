@@ -1,12 +1,17 @@
 # MnM Maps
 
-A standalone Windows map overlay for **Monsters & Memories**. Open community wiki maps above the game, zoom and pan, and keep personal pins and notes. The current catalog has **33 map views across 26 zones**, including dungeon plans, isometric maps, and floor diagrams.
+A standalone Windows map overlay for **Monsters & Memories**. Use the full interactive **MnM Atlas** website above the game, including its map selection, floors, search, markers, personal notes, and community features. The **Wiki maps** view retains **33 map views across 26 zones**, local image import, offline caching, and the existing personal pins.
+
+**Atlas edition: 0.2.0.** Download the Windows EXE or ZIP from Releases. See the [Atlas guide](docs/ATLAS.md) for setup, browser notes, and shortcuts.
 
 **[Download the latest Windows release](https://github.com/goofysillyguy/mnm-maps/releases/latest)** · [Detailed installation guide](docs/INSTALLATION.md) · [Map coverage](docs/MAPS.md) · [Report a problem](https://github.com/goofysillyguy/mnm-maps/issues)
 
 ## What it does
 
 - Displays maps in a movable, resizable window with adjustable opacity and an always on top option.
+- Hosts the actual MnM Atlas site, so its menus, search, map controls, markers, note editing, import/export, sign-in, and community tools remain part of the page.
+- Remembers the last Atlas map, floor, center, and zoom, with a persistent browser profile for notes and sign-in.
+- Supports Atlas pop-up windows and native save dialogs for exports; external reference links open your usual browser.
 - Supports scrolling to zoom, dragging to pan, and resetting the view with **Fit**.
 - Saves personal pins, notes, and the last view separately for each map.
 - Provides a tray icon and keyboard shortcuts to show or hide the overlay.
@@ -18,13 +23,13 @@ The map is selected manually. MnM Maps does not access the game process, game fi
 
 ## Install
 
-You need a **Windows x64 PC** and a mouse and keyboard. Use Monsters & Memories in **windowed or borderless mode** so Windows can display the overlay above it. The published EXE includes .NET; a separate runtime, Python, or developer tools are not needed.
+You need **Windows 10 version 2004 or newer, x64**, and a mouse and keyboard. Use Monsters & Memories in **windowed or borderless mode** so Windows can display the overlay above it. The EXE includes .NET. Atlas also needs the **Microsoft Edge WebView2 Runtime**, commonly already installed on Windows; the app offers a download link if it cannot start the browser. Python and developer tools are not needed to run the EXE.
 
 1. Open [Releases](https://github.com/goofysillyguy/mnm-maps/releases/latest).
 2. Download **`MnMMaps-win-x64.zip`** from the release's **Assets** section. The GitHub **Source code** archives are for developers.
 3. Right-click the ZIP, choose **Extract All**, and open the extracted folder.
 4. Double-click **`MnMMaps.exe`** to run it, or double-click **`install.bat`** to install it for your Windows account and add a Start Menu shortcut.
-5. Choose a map in the dropdown. Its first download needs an internet connection.
+5. In the Atlas edition, use the site's **Map** selector and search menu, or choose **Wiki maps** for the original image viewer. Uncached Atlas content and the first wiki-image download need internet access.
 
 For the smallest download, get **`MnMMaps.exe`** directly from the same release and run it from a folder you control. The EXE works on its own. See the [installation guide](docs/INSTALLATION.md) for detailed instructions, file verification, updates, backups, uninstalling, and troubleshooting.
 
@@ -36,6 +41,12 @@ Windows may show an unknown-publisher prompt because these releases are not code
 | --- | --- |
 | **Ctrl+Shift+M** | Show or hide the overlay |
 | **Ctrl+Shift+L** | Toggle map-only lock and mouse passthrough; unlock restores the controls |
+| **MnM Atlas** / **Wiki maps** | Switch between the live interactive site and the original image viewer |
+| **Ctrl+F** | Atlas's own search shortcut; repeated presses follow the website's normal behavior |
+| **Ctrl+L** | Select the Atlas address so you can paste a map or place link; Enter opens it |
+| **F5** / **Ctrl+R** | Reload Atlas |
+| **Alt+Left** / **Alt+Right** | Back / forward through Atlas navigation |
+| **Alt+Home** | Open the world map |
 | Mouse wheel | Zoom around the pointer |
 | Drag the map | Pan |
 | **Fit** | Fit the entire map in the window |
@@ -49,7 +60,7 @@ Windows may show an unknown-publisher prompt because these releases are not code
 | **Hide** | Keep running in the tray |
 | **×** | Quit |
 
-Lock hides the title, map selector, buttons, sliders, pin panel, status text, borders, and resize grip. Only the map and your pins remain visible, at the same position and zoom. Unlock to change the map, opacity, window size, or pins.
+Lock hides the app's title, selectors, buttons, sliders, panels, status text, borders, and resize grip. In Atlas it also hides the website's controls while keeping its map, markers, and attribution visible. Layout is retained so locking does not pan or rescale the map. Pop-up windows hide while the overlay is hidden or locked and return when it is shown and unlocked. Unlock to interact with the site or change the view.
 
 If the map ignores clicks, mouse passthrough is probably enabled. Press **Ctrl+Shift+L**, or right-click the tray icon and select **Unlock mouse and show**, to restore the controls and mouse interaction. If a shortcut is already used by another app, MnM Maps reports that in its status line; the tray icon remains available.
 
@@ -63,11 +74,13 @@ Some maps contain several floors on the same drawing. Zoom and pan that plan to 
 
 ## Saved data and updates
 
-Settings, pins, map views, downloaded images, and imported maps are stored in:
+Settings, pins, map views, downloaded images, imported maps, and the persistent Atlas browser profile are stored in:
 
 ```text
 %LOCALAPPDATA%\MnMMaps
 ```
+
+Atlas's notes and sign-in are in `atlas-browser`, separate from your normal browser and the Wiki maps pin lists. Export notes on the Atlas site in your usual browser, then use Import inside the overlay to transfer them. Use Atlas's own Export for portable note backups; the browser profile is retained during app updates and uninstallation.
 
 To update, quit the old overlay, download the new release, and replace the EXE or rerun `install.bat`. Keeping this data folder preserves your pins and settings. The app does not download program updates automatically.
 
@@ -93,7 +106,7 @@ The outputs are in `artifacts\release`. [Development and release notes](docs/DEV
 
 ## Project status and credits
 
-The viewer is an initial release. Build and package checks cover image decoding, offline cache reads, pin coordinates, zoom, centering, persistence, image import, and WPF rendering. Native shortcuts, mixed DPI setups, tray behavior, and mouse passthrough still benefit from interactive checks on your own desktop.
+Atlas support is new. The app hosts the live site, whose features and sign-in services can change independently of this release. If something behaves differently in the overlay, report the map, visible error, and steps to reproduce it. The existing package-check utility covers the Wiki maps image viewer, not Atlas.
 
 Interface ideas came from Amy Lindley's [Mo Betta Quests](https://github.com/amyklindley/mo-betta-quests) and [Mo Betta Crafts](https://github.com/amyklindley/mo-betta-crafts). This project uses its own implementation and stores its own data. [NOTICE.md](NOTICE.md) lists map sources and credits.
 

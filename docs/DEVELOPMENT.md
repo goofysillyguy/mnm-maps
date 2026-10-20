@@ -2,7 +2,7 @@
 
 ## Build environment
 
-Use Windows x64 with the .NET 10 SDK. `global.json` accepts installed .NET 10 feature bands. The application is WPF with a Windows Forms tray icon, and has no third party NuGet dependencies.
+Use Windows 10 version 2004 or newer, x64, with the .NET 10 SDK. `global.json` accepts installed .NET 10 feature bands. The application is WPF with a Windows Forms tray icon, and references Microsoft.Web.WebView2 1.0.4258.31. Atlas requires the separately installed Evergreen WebView2 Runtime. The versioned Windows target supplies the WinRT APIs used by WebView2CompositionControl.
 
 ```powershell
 dotnet build .\src\MnMMaps.App -c Release
@@ -16,6 +16,7 @@ dotnet run --project .\src\MnMMaps.App -c Release
 | `src/MnMMaps.App/MainWindow.*` | Window layout, selection, pins, and interaction |
 | `src/MnMMaps.App/MapSurface.cs` | Raster map rendering, zoom, pan, and pin coordinates |
 | `src/MnMMaps.App/MapImages.cs` | Image validation, wiki image downloads, and cache reads |
+| `src/MnMMaps.App/AtlasBrowser.cs` | Live Atlas hosting, persistent browser profile, pop-ups, exports, and lock styling |
 | `src/MnMMaps.App/Models.cs` | Catalog models and this app's local settings |
 | `src/MnMMaps.App/OverlayControls.cs` | Shortcuts, tray icon, and styles applied to our own window |
 | `src/MnMMaps.App/Data/maps.json` | Embedded map catalog, original sources, and discovery records |
@@ -43,7 +44,17 @@ artifacts/release/SHA256SUMS.txt
 
 The default publish includes .NET, uses a single executable, and compresses its bundle. `scripts/publish-maps.ps1 -FrameworkDependent` is available for local development with an installed .NET desktop runtime; build release packages with the default self-contained mode.
 
-The ZIP contains the executable, installer and uninstaller helpers, user instructions, and license notices. Original wiki map images, local caches, personal settings, and build artifacts are excluded from Git. Release binaries are attached to GitHub Releases rather than committed into source history.
+The ZIP contains the executable, installer and uninstaller helpers, user instructions including `docs/ATLAS.md`, and third party license notices. The WebView2 SDK loader is bundled in the standalone executable; the Evergreen browser runtime is not bundled. Original wiki map images, Atlas site content, local caches, personal settings, and build artifacts are excluded from Git. Release binaries are attached to GitHub Releases rather than committed into source history.
+
+## Atlas host
+
+The app loads the complete public Atlas page as a top-level WebView2 document; it does not copy the site implementation or map tiles into the source repository. `WebView2CompositionControl` keeps browser rendering in the WPF visual tree so the existing layered window, opacity, and click-through model can be retained.
+
+The only injected document style hides site controls during lock using visibility, retaining layout and map position. Atlas attribution remains visible. The site's own Ctrl+F handler and other keyboard behavior are left intact while the page has focus. Native app accelerators dispatch browser operations after their WPF callback returns, because WebView2 blocks its browser during accelerator callbacks.
+
+The browser profile is `MapStore.Root/atlas-browser`. Pop-ups use the same environment and default profile to retain the site's own opener communication. Sign-in navigation is handled by the site and browser; auth callback parameters are excluded from saved map URLs. Exports use a native save dialog and the underlying WebView2 download operation. The app does not publish site edits or sign in on a player's behalf.
+
+The existing package-check utility below exercises Wiki maps only; do not interpret its historical coverage as Atlas coverage. Atlas behavior, sign-in, imports/exports, fullscreen, shortcuts, transparency, and locking require interactive review when changing the browser integration.
 
 ## Package check
 
